@@ -8,9 +8,9 @@
 4. Wait a bit
 5. Open http://localhost:3200/
 
-In order to use my swagger.yaml file go to devhelpers/dev-helper-initializer.js  
-first create a new copy of the swagger.yaml file in the devhelpers folder and
-replace
+In order to use my swagger.yaml.first create a new copy of the swagger.yaml file in the devhelpers folder
+
+file go to devhelpers/dev-helper-initializer.js and replace
 ```
 url: "https://petstore.swagger.io/v2/swagger.json",
 ```
