@@ -1,0 +1,192 @@
+openapi: 3.0.3
+info:
+    title: Spotify Playlist API in PHP
+    version: 1.0.11
+    description: >-
+        This is a OpenAPI 3.0 specification about a php api that parforms CRUD operations on items that are
+        like spotify playlists.  You can find out more about
+
+        the spotify API at
+        [https://developer.spotify.com/documentation/web-api/reference/#/](https://developer.spotify.com/documentation/web-api/reference/#/). 
+servers:
+    -
+        url: 'http://192.168.21.23'
+paths:
+    '/playlists/{UserId}':
+        summary: Endpoint for Get
+        get:
+            tags:
+                - playlists
+            parameters:
+                -
+                    examples:
+                        Userid:
+                            value: 'nfi32ni4lgb34bg4lig4bug'
+                        OldAccountUserId:
+                            value: 'kristjansteinfeldt'
+                    name: UserId
+                    description: ID of user whose playlists to fetch
+                    schema:
+                        format: String
+                        type: string
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                additionalProperties:
+                                    format: int32
+                                    type: integer
+                            examples:
+                                Playlist name and id:
+                                    value: '{"items":[{"id":"1","name":"Examplename"}]}'
+                    description: successful operation
+            operationId: getPlaylists
+            summary: Returns playlists in JSON
+            description: Returns a array of playlist items by userID
+        parameters:
+            -
+                name: UserId
+                description: ID of user whose playlists to fetch
+                schema:
+                    format: String
+                    type: string
+                in: path
+                required: true
+    /playlists/:
+        summary: Endpoint for put and post
+        put:
+            requestBody:
+                description: |-
+                    {
+                    "name":"Test",
+                    "userid":"kristjansteinfeldt"
+                    }
+                content:
+                    application/json:
+                        schema:
+                            type: string
+                        examples:
+                            Body:
+                                value:
+                                    name: Test
+                                    userid: kristjansteinfeldt
+                required: true
+            tags:
+                - playlists
+            responses:
+                '200':
+                    content:
+                        text/plain; charset=utf-8:
+                            examples:
+                                Updated:
+                                    value: 'Playlist 46, {Name} updated successfully.'
+                    description: Playlist updated
+            security:
+                -
+                    Sessionid: []
+            operationId: UpdateplaylistName
+            summary: Update a playlist name by ID
+            description: ''
+        post:
+            requestBody:
+                description: Post body
+                content:
+                    application/json:
+                        schema:
+                            type: string
+                        examples:
+                            Post body:
+                                value:
+                                    name: Test
+                                    userid: kristjansteinfeldt
+                required: true
+            tags:
+                - playlists
+            responses:
+                '200':
+                    content:
+                        text/plain; charset=utf-8:
+                            examples:
+                                PlaylistName created:
+                                    value: PlaylistName Created
+                    description: successful operation
+                '405':
+                    description: Invalid input
+            security:
+                -
+                    Sessionid: []
+            operationId: NewPlaylist
+            summary: Create a new playlist item
+            description: Create a new playlist item
+    '/playlists/{PlaylistId}':
+        summary: Endpoint for delete
+        delete:
+            tags:
+                - playlists
+            parameters:
+                -
+                    examples:
+                        Id:
+                            value: '1'
+                    name: PlaylistId
+                    description: ID of playlist to delete
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    description: 'Playlist {id} deleted'
+            security:
+                -
+                    Sessionid: []
+            operationId: deletePlaylist
+            summary: Delete Playlist by ID
+            description: delete a playlist by sending a id in the url with DELETE
+    /playlists/sessions:
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: array
+                            items:
+                                type: string
+                        examples:
+                            Admin:
+                                value:
+                                    username: admin
+                                    password: password
+                required: true
+            responses:
+                '200':
+                    content:
+                        text/xml:
+                            examples:
+                                SessionID:
+                                    value: 61c15c5b
+                    description: Sessionid
+                '401':
+                    content:
+                        text/xml:
+                            examples:
+                                Invalid username or password:
+                                    value: Invalid username or password
+                    description: Invalid username or password
+            description: |
+                Create a session with username and password
+components:
+    securitySchemes:
+        Sessionid:
+            scheme: basic
+            type: http
+            description: Sessionid params
+tags:
+    -
+        name: playlists
+        description: Modify Playlist items
+          
